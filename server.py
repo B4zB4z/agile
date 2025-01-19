@@ -78,11 +78,18 @@ def clients():
 @app.route('/add_client', methods=['GET', 'POST'])
 def add_client():
     if request.method=='POST':
-        data=request.form 
-        client_name=data['clients']
+        company_name = request.form["company_name"]
+        industry = request.form["industry"]
+        address = request.form["address"]
+        phone = request.form["phone"]
+        company_size = request.form["company_size"]
+        tin = request.form["tin"]
         conn=sqlite3.connect("data.db")
         cursor=conn.cursor()
-        cursor.execute("INSERT INTO clients (name) VALUES ('" + client_name + "')")
+        cursor.execute('''
+            INSERT INTO clients (company_name, industry, address, phone, company_size, tin)
+            VALUES (?, ?, ?, ?, ?, ?)
+        ''', (company_name, industry, address, phone, company_size, tin))
         conn.commit()
         return redirect('/clients')
     else:
