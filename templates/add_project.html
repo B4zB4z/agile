@@ -5,30 +5,30 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
-<form class="row g-3">
+<form class="row g-3" method="POST">
         <div class="col-md-6">
-          <label for="inputEmail4" class="form-label">Title</label>
-          <input type="text" class="form-control" id="inputProjectTitle">
+          <label for="inputTitle" class="form-label">Title</label>
+          <input type="text" class="form-control" id="inputTitle" name="Title">
         </div>
         <div class="col-md-6">
-          <label for="inputPassword4" class="form-label">Description</label>
-          <input type="text" class="form-control" id="inputProjectDescription">
+          <label for="inputDescription" class="form-label">Description</label>
+          <input type="text" class="form-control" id="inputDescription" name="Description">
         </div>
         <div class="col-md-6">
-          <label for="inputAddress" class="form-label">Consultant</label>
-          <input type="text" class="form-control" id="inputAddress">
+          <label for="inputConsultant" class="form-label">Consultant</label>
+          <input type="text" class="form-control" id="inputConsultant" name="Consultant">
         </div>
         <div class="col-md-6">
-          <label for="inputPassword4" class="form-label">Client</label>
-          <input type="text" class="form-control" id="inputProjectDescription">
+          <label for="inputClient" class="form-label">Client</label>
+          <input type="text" class="form-control" id="inputClient" name="Client">
         </div>
         <div class="col-md-4">
-          <label for="startDate" class="form-label">Deadline</label>
-          <input id="Deadline" class="form-control" type="date" />
+          <label for="inputDeadline" class="form-label">Deadline</label>
+          <input type="date" class="form-control" id="inputDeadline" name="Deadline" />
         </div>
         <div class="col-md-4">
           <label for="inputState" class="form-label">Status</label>
-          <select id="inputState" class="form-select">
+          <select name="Status" id="inputState" class="form-select">
             <option selected>Choose...</option>
             <option>In-Progress</option>
             <option>Completed</option>

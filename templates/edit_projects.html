@@ -19,16 +19,16 @@
     </tr>
   </thead>
   <tbody>
-    {% for record in records %}
+    {% for record in projects %}
     <tr>
-      <td>{{ record[0] }}</td>
       <td>{{ record[1] }}</td>
       <td>{{ record[2] }}</td>
-      <td>{{ record[0] }}</td>
-      <td>{{ record[1] }}</td>
-      <td>{{ record[2] }}</td>
+      <td>{{ record[3] }}</td>
+      <td>{{ record[4] }}</td>
+      <td>{{ record[5] }}</td>
+      <td>{{ record[6] }}</td>
       <td>
-        <a href="/edit/{{ record[0] }}" class="btn btn-warning btn-sm">Edit</a>
+        <a href="/editp/{{ record[0] }}" class="btn btn-warning btn-sm">Edit</a>
       </td>
     </tr>
     {% endfor %}

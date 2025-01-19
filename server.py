@@ -15,6 +15,15 @@ db.execute("""CREATE TABLE IF NOT EXISTS clients
                  CompanySize TEXT,
                  TIN INTEGER)
            """)
+db.execute("""CREATE TABLE IF NOT EXISTS projects
+                (id INTEGER PRIMARY KEY AUTOINCREMENT,
+                 Title TEXT,
+                 Description TEXT,
+                 Consultant TEXT,
+                 Client TEXT,
+                 Deadline DATE,
+                 Status TEXT)
+           """)
 
 #placeholder for testing 
 app.config['SESSION_TYPE'] = 'filesystem'
@@ -73,6 +82,62 @@ def clients():
     client_list = cursor.execute("SELECT * FROM clients")
     return render_template('clients.html', clients=client_list)
 
+@app.route('/edit_client')
+def edit_client():
+    conn = sqlite3.connect("data.db")
+    cursor = conn.cursor()
+    client_list = cursor.execute("SELECT * FROM clients")
+    return render_template('edit_client.html', clients=client_list)
+
+@app.route("/edit/<int:client_id>", methods=["GET", "POST"])
+def edit(client_id):
+    conn = sqlite3.connect("data.db")
+    cursor = conn.cursor()
+
+    # For GET request: Get client data by ID
+    if request.method == 'GET':
+        client = conn.execute('SELECT * FROM clients WHERE id = ?', (client_id,)).fetchone()
+        conn.close()
+
+        # Ensure that client data is passed correctly to the template
+        if client:
+            # Convert client tuple to dictionary for easy access in the template
+            client_data = {
+                'id': client[0],
+                'company_name': client[1],
+                'industry': client[2],
+                'address': client[3],
+                'phone': client[4],
+                'company_size': client[5],
+                'tin': client[6]
+            }
+            return render_template('edit.html', clients=client_data)
+        else:
+            return "Client not found", 404
+
+    # For POST request: Update client data
+    elif request.method == 'POST':
+        column1 = request.form['column1']
+        column2 = request.form['column2']
+        column3 = request.form['column3']
+        column4 = request.form['column4']
+        column5 = request.form['column5']
+        column6 = request.form['column6']
+
+        conn.execute(
+            '''
+            UPDATE clients
+            SET company_name = ?, industry = ?, address = ?, phone = ?, company_size = ?, tin = ?
+            WHERE id = ?
+            ''',
+            (column1, column2, column3, column4, column5, column6, client_id)
+        )
+        conn.commit()
+        conn.close()
+        return redirect('/clients')
+
+
+    
 
 
 @app.route('/add_client', methods=['GET', 'POST'])
@@ -94,7 +159,89 @@ def add_client():
         return redirect('/clients')
     else:
         return render_template('add_client.html')
+    
 
+@app.route('/projects')
+def projects():
+    conn = sqlite3.connect("data.db")
+    cursor = conn.cursor()
+    projects_list = cursor.execute("SELECT * FROM projects")
+    return render_template('projects.html', projects=projects_list)
+
+
+@app.route('/add_project', methods=['GET', 'POST'])
+def add_project():
+    if request.method=='POST':
+        title = request.form["Title"]
+        description = request.form["Description"]
+        consultant = request.form["Consultant"]
+        client = request.form["Client"]
+        deadline = request.form["Deadline"]
+        status = request.form["Status"]
+        conn=sqlite3.connect("data.db")
+        cursor=conn.cursor()
+        cursor.execute('''
+            INSERT INTO projects (Title, Description, Consultant, Client, Deadline, Status)
+            VALUES (?, ?, ?, ?, ?, ?)
+        ''', (title, description, consultant, client, deadline, status))
+        conn.commit()
+        return redirect('/projects')
+    else:
+        return render_template('add_project.html')
+
+@app.route('/edit_project')
+def edit_project():
+    conn = sqlite3.connect("data.db")
+    cursor = conn.cursor()
+    project_list = cursor.execute("SELECT * FROM projects")
+    return render_template('edit_projects.html', projects=project_list)
+
+@app.route("/editp/<int:project_id>", methods=["GET", "POST"])
+def editp(project_id):
+    conn = sqlite3.connect("data.db")
+    cursor = conn.cursor()
+
+    # For GET request: Get client data by ID
+    if request.method == 'GET':
+        project = conn.execute('SELECT * FROM projects WHERE id = ?', (project_id,)).fetchone()
+        conn.close()
+
+        # Ensure that client data is passed correctly to the template
+        if project:
+            # Convert client tuple to dictionary for easy access in the template
+            project_data = {
+                'id': project[0],
+                'Title': project[1],
+                'Description': project[2],
+                'Consultant': project[3],
+                'Client': project[4],
+                'Deadline': project[5],
+                'Status': project[6]
+            }
+            return render_template('editp.html', projects=project_data)
+        else:
+            return "Project not found", 404
+
+    # For POST request: Update client data
+    elif request.method == 'POST':
+        column1 = request.form['column1']
+        column2 = request.form['column2']
+        column3 = request.form['column3']
+        column4 = request.form['column4']
+        column5 = request.form['column5']
+        column6 = request.form['column6']
+
+        conn.execute(
+            '''
+            UPDATE projects
+            SET Title = ?, Description = ?, Consultant = ?, Client = ?, Deadline = ?, Status = ?
+            WHERE id = ?
+            ''',
+            (column1, column2, column3, column4, column5, column6, project_id)
+        )
+        conn.commit()
+        conn.close()
+        return redirect('/projects')
 
 
 if __name__ == '__main__':
